@@ -1,0 +1,5 @@
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\UniversalFileReader\UniversalFileReader\bin\Debug\UniversalFileReader.dll
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\UniversalFileReader\UniversalFileReader\bin\Debug\UniversalFileReader.pdb
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\UniversalFileReader\UniversalFileReader\obj\Debug\UniversalFileReader.dll
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\UniversalFileReader\UniversalFileReader\obj\Debug\UniversalFileReader.pdb
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\UniversalFileReader\UniversalFileReader\obj\Debug\UniversalFileReader.csprojResolveAssemblyReference.cache
