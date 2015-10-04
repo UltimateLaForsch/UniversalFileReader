@@ -157,8 +157,30 @@ namespace UniversalFileReader
             return splittedData;
         }
 
+        private double conversion(string readvalue)
+        {
+
+            if (readvalue == "") readvalue = "0.0";
+            string compName = Environment.MachineName;
+            if (compName.Substring(0, 2) == "JB")
+            {
+
+            }
+            else
+            {
+                readvalue = readvalue.Replace(",", ".");
+            }
+
+            // nur wegen US-Einstellung zuhause
+            //readvalue = readvalue.Replace(".", ",");
+
+            double convValue = Convert.ToDouble(readvalue);
+            return convValue;
+        }
+
         public void dataIntoDB(databaseType d, string connection, string dbName, string[] dbColNames, string[] dbColTypes, string targetTable, int [] headerMapping)
         {
+            
             // Fehler
             if(_dataArray == null)
             {
@@ -175,6 +197,9 @@ namespace UniversalFileReader
                     try
                     {
                         conn.Open();
+                        string strSQL = "DELETE FROM fibuDW.ufrtest";
+                        MySqlCommand cmd3 = new MySqlCommand(strSQL, conn);
+                        cmd3.ExecuteScalar();
                     }
                     catch(Exception ex)
                     {
@@ -187,7 +212,59 @@ namespace UniversalFileReader
                     // Daten anpassen
                     int endzeile = (_hasHeaders==true) ? noLines : noLines+1;
                     int startzeile = (_hasHeaders == true) ? 1 : 0;
+
+                    for (int schleife = startzeile; schleife < endzeile; schleife++)
+                    {
+                        string query = "INSERT INTO " + dbName + "." + targetTable + " (" + dbColNames[0] + ") values (@element)";
+                        MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                        switch (dbColTypes[0])
+                        {
+                            case "s":
+                                cmd.Parameters.AddWithValue("@element", _dataArray[schleife, 0]);
+                                break;
+                            case "i":
+                                cmd.Parameters.AddWithValue("@element", Convert.ToInt16(_dataArray[schleife, 0]));
+                                break;
+                            case "d":
+                                cmd.Parameters.AddWithValue("@element", Convert.ToDouble(conversion(dataArray[schleife, 0])));
+                                break;
+                            case "b":
+                                cmd.Parameters.AddWithValue("@element", Convert.ToBoolean(_dataArray[schleife, 0]));
+                                break;
+                        }
+                        cmd.ExecuteScalar();
+
+                        for (int schleife2 = 1; schleife2 < noColumns; schleife2++)
+                        {
+                            string query2 = "UPDATE " + dbName + "." + targetTable + " SET " + dbColNames[schleife2] + " = @elementz WHERE " + dbColNames[0] +
+                                                    " = '" + _dataArray[schleife, 0] + "'";
+                            Console.WriteLine(query2);
+                            MySqlCommand cmd2 = new MySqlCommand(query2, conn);
+
+                            switch (dbColTypes[schleife2])
+                            {
+                                case "s":
+                                    cmd2.Parameters.AddWithValue("@elementz", _dataArray[schleife, schleife2]);
+                                    break;
+                                case "i":
+                                    //cmd.Parameters.AddWithValue("@elementz", Convert.ToInt16(_dataArray[schleife, schleife2]));
+                                    cmd2.Parameters.Add("@elementz", MySqlDbType.Int16).Value = Convert.ToInt16(_dataArray[schleife, schleife2]);
+                                    break;
+                                case "d":
+                                    cmd2.Parameters.AddWithValue("@elementz", conversion(_dataArray[schleife, schleife2]));
+                                    break;
+                                case "b":
+                                    cmd2.Parameters.AddWithValue("@elementz", Convert.ToBoolean(_dataArray[schleife, schleife2]));
+                                    break;
+
+                            }
+                            cmd2.ExecuteScalar();
+
+                        }
+                    }
                     
+                    /*
                     for (int schleife = startzeile; schleife < endzeile; schleife++)
                     {
                         switch (dbColTypes[0])
@@ -236,12 +313,16 @@ namespace UniversalFileReader
                             
                         }
                     }
+                    */
+                   
 
                     break;
                 default:
                     Console.WriteLine("ufr> db-type not possible");
                     break;
             }
+
+           
 
         }
     }
