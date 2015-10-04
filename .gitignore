@@ -1,3 +1,11 @@
+# binaries
+bin/
+obj/
+
+# ide files
+*.userprefs
+*.suo
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
