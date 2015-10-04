@@ -264,58 +264,7 @@ namespace UniversalFileReader
                         }
                     }
                     
-                    /*
-                    for (int schleife = startzeile; schleife < endzeile; schleife++)
-                    {
-                        switch (dbColTypes[0])
-                        {
-                            case "s":
-                                string elements = _dataArray[schleife, 0];
-                                string query = "INSERT INTO " + dbName + "." + targetTable + " (" + dbColNames[0] + ") values (@elements)";
-                                MySqlCommand cmd = new MySqlCommand(query, conn);
-                                cmd.Parameters.AddWithValue("@elements", elements);
-                                cmd.ExecuteScalar();
-                                break;
-                            case "i":
-                                int elementi = Convert.ToInt16(_dataArray[schleife, 0]);
-                                break;
-                            case "d":
-                                double elementd = Convert.ToDouble(_dataArray[schleife, 0]);
-                                break;
-                            case "b":
-                                bool elementb = Convert.ToBoolean(_dataArray[schleife, 0]);
-                                break;
-
-                        }
-                        for (int schleife2 = 1; schleife2 < noColumns; schleife2++)
-                        {
-                            switch (dbColTypes[schleife2])
-                            {
-                                case "s":
-                                    string elements = _dataArray[schleife, schleife2];
-                                    string query = "UPDATE " + dbName + "." + targetTable + " SET " + dbColNames[schleife2] + " = '" + @elements + "' WHERE " + dbColNames[0] +
-                                                    " = '" + _dataArray[schleife, 0] + "'";
-                                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                                    cmd.Parameters.AddWithValue("@elements", elements);
-                                    cmd.ExecuteScalar();
-                                    break;
-                                case "i":
-                                    int elementi = Convert.ToInt16(_dataArray[schleife, schleife2]);
-                                    break;
-                                case "d":
-                                    double elementd = Convert.ToDouble(_dataArray[schleife, schleife2]);
-                                    break;
-                                case "b":
-                                    bool elementb = Convert.ToBoolean(_dataArray[schleife, schleife2]);
-                                    break;
-
-                            }
-                            
-                        }
-                    }
-                    */
-                   
-
+                    
                     break;
                 default:
                     Console.WriteLine("ufr> db-type not possible");
